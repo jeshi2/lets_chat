@@ -30,12 +30,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Center(
+          child: Text(
+            'Let\'s Chat',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        backgroundColor: Colors.blue,
         actions: [
           // signout button
           IconButton(
             onPressed: signOut,
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout, color: Colors.white,),
           )
         ],
       ),
