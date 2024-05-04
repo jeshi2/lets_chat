@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthService extends ChangeNotifier {
   // instnace of auth
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  // instance of firestore
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   // sign user in
   Future<UserCredential> signInWithEmailandPassword(
@@ -15,6 +19,12 @@ class AuthService extends ChangeNotifier {
         email: email,
         password: password,
       );
+
+      // add a new document for user in user collection if not exist
+      _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': email,
+      }, SetOptions(merge: true));
       return userCredential;
     }
     // catch any error
@@ -32,6 +42,12 @@ class AuthService extends ChangeNotifier {
         email: email,
         password: password,
       );
+
+      // after create user, create a new document for the user in use collection
+      _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': email,
+      });
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
